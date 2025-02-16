@@ -28,6 +28,7 @@ jobs:
 
   deploy:
     name: Deploy to Dev Server    
+    needs: [build_core]
     runs-on: ubuntu-latest
     steps:
       - name: Install SSH client
