@@ -10,31 +10,31 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.version.outputs.VERSION }}  # Expose VERSION as an output
-    # steps:
-    #   - name: Checkout Core Code
-    #     uses: actions/checkout@v3
-    #     with:
-    #       ref: master
+    steps:
+      - name: Checkout Core Code
+        uses: actions/checkout@v3
+        with:
+          ref: master
 
-    #   - name: Set up Docker Buildx (Core)
-    #     uses: docker/setup-buildx-action@v2
+      - name: Set up Docker Buildx (Core)
+        uses: docker/setup-buildx-action@v2
 
-    #   - name: Log in to Docker Hub (Prod)
-    #     run: |
-    #       echo "${{ secrets.DOCKERHUB2_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB2_USERNAME }}" --password-stdin
+      - name: Log in to Docker Hub (Prod)
+        run: |
+          echo "${{ secrets.DOCKERHUB2_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB2_USERNAME }}" --password-stdin
 
-    #   - name: Read Version from file
-    #     id: version
-    #     run: |
-    #       VERSION=$(cat VERSION)
-    #       echo "VERSION=$VERSION" >> $GITHUB_ENV
-    #       echo "VERSION=$VERSION" >> $GITHUB_OUTPUT  # Make it an output
+      - name: Read Version from file
+        id: version
+        run: |
+          VERSION=$(cat VERSION)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT  # Make it an output
 
-    #   - name: Build & Push Core Image
-    #     run: |
-    #       docker build --no-cache -t ${{ secrets.DOCKERHUB2_USERNAME }}/re-superset:${{ env.VERSION }} -t ${{ secrets.DOCKERHUB2_USERNAME }}/re-superset:latest -f Dockerfile .
-    #       docker push ${{ secrets.DOCKERHUB2_USERNAME }}/re-superset:${{ env.VERSION }}
-    #       docker push ${{ secrets.DOCKERHUB2_USERNAME }}/re-superset:latest
+      - name: Build & Push Core Image
+        run: |
+          docker build --no-cache -t ${{ secrets.DOCKERHUB2_USERNAME }}/re-superset:${{ env.VERSION }} -t ${{ secrets.DOCKERHUB2_USERNAME }}/re-superset:latest -f Dockerfile .
+          docker push ${{ secrets.DOCKERHUB2_USERNAME }}/re-superset:${{ env.VERSION }}
+          docker push ${{ secrets.DOCKERHUB2_USERNAME }}/re-superset:latest
 
   deploy:
     name: Deploy to Prod Server    
