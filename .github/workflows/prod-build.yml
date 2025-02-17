@@ -26,6 +26,7 @@ jobs:
         run: |
           VERSION=$(cat VERSION)
           echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT  # Make it an output
 
       - name: Build & Push Core Image
         run: |
@@ -51,7 +52,7 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.PROD_SSH_USER }}@${{ secrets.PROD_SSH_HOST }} "
             docker login -u ${{ secrets.DOCKERHUB2_USERNAME }} -p ${{ secrets.DOCKERHUB2_PASSWORD }} &&
-            docker pull ${{ secrets.DOCKERHUB2_USERNAME }}/re-superset:${{ env.VERSION }} &&
+            docker pull ${{ secrets.DOCKERHUB2_USERNAME }}/re-superset:${{ needs.build_core.outputs.version }} &&
             docker pull ${{ secrets.DOCKERHUB2_USERNAME }}/re-superset:latest &&
             cd /home/prodsupersetuser/re-superset && \
             docker compose up -d 
