@@ -75,8 +75,8 @@ jobs:
 
       - name: Build & Push Core Image
         run: |
-          docker build --no-cache -t ${{ secrets.ACR_LOGIN_SERVER }}/{{ secrets.ACR_REPO }}:develop-latest .
-          docker push ${{ secrets.ACR_LOGIN_SERVER }}/{{ secrets.ACR_REPO }}:develop-latest
+          docker build --no-cache -t ${{ secrets.ACR_LOGIN_SERVER }}/re-superset:develop-latest .
+          docker push ${{ secrets.ACR_LOGIN_SERVER }}/re-superset:develop-latest
 
   deploy:
     name: Deploy to Dev Server    
@@ -96,7 +96,7 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.DEV_SSH_USER }}@${{ secrets.DEV_SSH_HOST }} "
             echo \"${{ secrets.ACR_PASSWORD }}\" | docker login ${{ secrets.ACR_LOGIN_SERVER }} -u \"${{ secrets.ACR_USERNAME }}\" --password-stdin &&
-            docker pull ${{ secrets.ACR_LOGIN_SERVER }}/{{ secrets.ACR_REPO }}:develop-latest &&
+            docker pull ${{ secrets.ACR_LOGIN_SERVER }}/re-superset:develop-latest &&
             cd /home/supersetuser/re-superset && \
             docker compose up -d
           "
