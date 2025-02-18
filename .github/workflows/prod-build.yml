@@ -71,7 +71,7 @@ jobs:
   build_core:
     name: Build & Push Core Superset Image (Prod)
     outputs:
-    version: ${{ steps.version.outputs.VERSION }}
+      version: ${{ steps.version.outputs.VERSION }}
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
